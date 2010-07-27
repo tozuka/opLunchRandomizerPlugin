@@ -174,7 +174,7 @@ class LunchEventTask extends sfBaseTask
   }
   private function test_createevent(){
     $event_date = strtotime('tomorrow');
-    $title = date('m-d',$event_date) .  'のランチイベント';
+    $title = date('m/d',$event_date) .  'のランチイベント';
     $body = Doctrine::getTable('SnsConfig')->get('oplunchrandomizerplugin_lr_body','none');
     $member_id = (int)Doctrine::getTable('SnsConfig')->get('oplunchrandomizerplugin_lr_from',null);
     $community_id = (int)Doctrine::getTable('SnsConfig')->get('oplunchrandomizerplugin_lr_community',null);
