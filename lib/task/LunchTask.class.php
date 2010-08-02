@@ -539,10 +539,13 @@ class LunchEventTask extends sfBaseTask
     ksort($groups);
     foreach ($groups as $groupName => $group)
     {
+      $captain = rand(0, count($group)-1);
       $result .= $groupName . "\n";
-      foreach ($group as $member_id)
+      foreach ($group as $i => $member_id)
       {
-        $result .= $this->nameFromMemberId($member_id) . "\n";
+        $result .= $this->nameFromMemberId($member_id);
+        if ($i == $captain) $result .= "◎";
+        $result .= "\n";
       }
     }
     $result .= "\n\n";
