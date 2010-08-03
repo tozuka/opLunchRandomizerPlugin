@@ -211,7 +211,7 @@ class LunchEventTask extends sfBaseTask
       }
       elseif (preg_match('/'.$this->footer_identifier.'/',$line))
       {
-        continue;
+        break;
       }
       else
       {
