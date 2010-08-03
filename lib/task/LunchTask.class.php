@@ -240,7 +240,8 @@ class LunchEventTask extends sfBaseTask
       $group2 = array();
       foreach ($group as $name)
       {
-        $group2[] = $this->nameToMemberId($name);
+        $member_id = $this->nameToMemberId($name);
+        if (!is_null($member_id)) $group2[] = $member_id;
       }
       $groups2[] = $group2;
     }
@@ -267,14 +268,28 @@ class LunchEventTask extends sfBaseTask
   private function nameFromMemberId($member_id)
   {
     $this->loadMemberData();
-    return $this->members["#REV/".$member_id];
+    if (isset($this->members["#REV/".$member_id]))
+    {
+      return $this->members["#REV/".$member_id];
+    }
+    else
+    {
+      return null;
+    }
   }
 
   // 名前からmember_idを得る
   private function nameToMemberId($name)
   {
     $this->loadMemberData();
-    return $this->members[$name];
+    if (isset($this->members[$name]))
+    {
+      return $this->members[$name];
+    }
+    else
+    {
+      return null;
+    }
   }
 
   // 参加者のリクエストを読み取る
