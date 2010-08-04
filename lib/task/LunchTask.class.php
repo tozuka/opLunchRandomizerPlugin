@@ -82,6 +82,7 @@ class LunchEventTask extends sfBaseTask
   private $possible_group_names = '[A-E]';
   private $infty = 99;
   private $footer_identifier = '■ランチ時間帯';
+  private $captain_mark_str = '◎';
 
   protected function configure()
   {
@@ -217,6 +218,7 @@ class LunchEventTask extends sfBaseTask
       }
       else
       {
+        $line = preg_replace('/'.$this->captain_mark_str.'/','',$line);
         if ($g) $groups[$g][] = $line;
       }
     }
@@ -563,7 +565,10 @@ class LunchEventTask extends sfBaseTask
       foreach ($group as $i => $member_id)
       {
         $result .= $this->nameFromMemberId($member_id);
-        if ($i == $captain) $result .= "◎";
+        if ($groupName != 'X' && $i == $captain)
+        {
+          $result .= $this->captain_mark_str;
+        }
         $result .= "\n";
       }
     }
