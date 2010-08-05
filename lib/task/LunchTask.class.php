@@ -597,7 +597,7 @@ class LunchEventTask extends sfBaseTask
   private function test_createevent()
   {
     $event_date = strtotime('tomorrow');
-    $title = date('m-d',$event_date) .  'のランチイベント';
+    $title = date('m/d',$event_date) .  'のランチイベント';
     $body = $this->getLunchRandomizerBody();
     $member_id = $this->getLunchRandomizerAgentId();
     $community_id = $this->getLunchRandomizerCommunityId();
