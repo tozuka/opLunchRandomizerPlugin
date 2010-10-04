@@ -353,7 +353,7 @@ class LunchEventTask extends sfBaseTask
         $min = $max = unabc($match[1]);
         $candidates = array($min);
       }
-      elseif (preg_match('/(X|別)/',$body,$match))
+      elseif (preg_match('/(X|別|SQ)/',$body,$match))
       {
         $candidates = array();
         $min = $max = $this->infty;
@@ -588,7 +588,7 @@ class LunchEventTask extends sfBaseTask
       $comment->save();
 
       $this->setTargetLunchEventId(null);
-      $this->log2activity($agent_id, 'ランチメンバーシャッフル完了！');
+      $this->log2activity($agent_id, 'ランチメンバーシャッフル完了！http://inner.tejimaya.com/communityEvent/'.$target_event_id);
     } else {
       print_r($result);
     }
@@ -597,7 +597,7 @@ class LunchEventTask extends sfBaseTask
   private function test_createevent()
   {
     $event_date = strtotime('tomorrow');
-    $title = date('m-d',$event_date) .  'のランチイベント';
+    $title = date('m/d',$event_date) .  'のランチイベント';
     $body = $this->getLunchRandomizerBody();
     $member_id = $this->getLunchRandomizerAgentId();
     $community_id = $this->getLunchRandomizerCommunityId();
@@ -617,7 +617,7 @@ class LunchEventTask extends sfBaseTask
     $member = Doctrine::getTable('Member')->find($member_id);
 
     $this->setTargetLunchEventId($event->id);
-    $this->log2activity($member_id,'ランチイベントを作成！');
+    $this->log2activity($member_id,'明日のランチイベントを作成！');
   }
 
   private function test_getmember(){
