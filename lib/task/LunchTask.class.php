@@ -84,6 +84,11 @@ class LunchEventTask extends sfBaseTask
   private $footer_identifier = '■ランチ時間帯';
   private $captain_mark_str = '◎';
 
+  private function generateEventURL($eventId)
+  {
+    return 'http://inner.tejimaya.com/communityEvent/'.$eventId;
+  }
+
   protected function configure()
   {
     set_time_limit(120);
@@ -109,6 +114,9 @@ class LunchEventTask extends sfBaseTask
         break;
       case 'shuffle':
         $this->shuffle();
+        break;
+      case 'notify':
+        $this->notify();
         break;
       case 'shuffleMCMC':
         $this->shuffleMCMC();
@@ -588,7 +596,7 @@ class LunchEventTask extends sfBaseTask
       $comment->save();
 
       $this->setTargetLunchEventId(null);
-      $this->log2activity($agent_id, 'ランチメンバーシャッフル完了！http://inner.tejimaya.com/communityEvent/'.$target_event_id);
+      $this->log2activity($agent_id, 'ランチメンバーシャッフル完了！'.$this->generateEventURL($target_event_id));
     } else {
       print_r($result);
     }
@@ -618,6 +626,14 @@ class LunchEventTask extends sfBaseTask
 
     $this->setTargetLunchEventId($event->id);
     $this->log2activity($member_id,'明日のランチイベントを作成！');
+  }
+
+  //
+  private function notify()
+  {
+    $memberId = $this->getLunchRandomizerAgentId();
+    $targetEventId = $this->getTargetLunchEventId();
+    $this->log2activity($memberId, '手嶋屋の皆さん、ランチに参加しましょう！'.$this->generateEventURL($targetEventId));
   }
 
   private function test_getmember(){
