@@ -105,6 +105,11 @@ class LunchEventTask extends sfBaseTask
 
   protected function execute($arguments = array(),$options = array())
   {
+    if (!sfContext::hasInstance())
+    {
+      sfContext::createInstance($this->createConfiguration('pc_frontend', 'prod'), 'pc_frontend');
+    }
+
     $databaseManager = new sfDatabaseManager($this->configuration);
  
     switch ($arguments['mode'])
@@ -636,8 +641,8 @@ class LunchEventTask extends sfBaseTask
       $member = Doctrine::getTable('Member')->find($member_id);
 
       $this->setTargetLunchEventId($event->id);
-      #$this->log2activity($member_id,'明日のランチイベントを作成！');
-      $this->log2activity($member_id,'ランチイベントを作成！');
+      $this->log2activity($member_id,'明日のランチイベントを作成！');
+      #$this->log2activity($member_id,'ランチイベントを作成！');
     }
     else
     {
