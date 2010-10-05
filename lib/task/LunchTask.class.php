@@ -124,6 +124,14 @@ class LunchEventTask extends sfBaseTask
       case 'shuffleMCMC2':
         $this->shuffleMCMC(0.333333);
         break;
+
+      case 'dryrunCreate':
+        $this->test_createevent(true);
+        break;
+      case 'dryrunMCMC2':
+        $this->shuffleMCMC(0.333333,true);
+        break;
+
       default:
         printf("LunchTask doesn't support the mode '%s'.\n", $arguments['mode']);
         break;
@@ -467,7 +475,7 @@ class LunchEventTask extends sfBaseTask
   }
 
   // 過去（最大で直近2日分）の結果を踏まえつつ、できるだけかぶらないようなランダムなグループを作る
-  private function shuffleMCMC($second_weight=0) // 0.0≦$second_weight≦1.0
+  private function shuffleMCMC($second_weight=0, $dryrun=false) // 0.0≦$second_weight≦1.0
   {
     $req = $this->getRequests();
     
@@ -557,11 +565,11 @@ class LunchEventTask extends sfBaseTask
       }
     }
 
-    $this->postResult($result);
+    $this->postResult($result,$dryrun);
   }
 
   //コメントとしてシャッフル結果を発表
-  private function postResult($groups,$post=true) // groups['A'] = (1,2,3), ...
+  private function postResult($groups,$dryrun=false) // groups['A'] = (1,2,3), ...
   {
     $result = "";
 
@@ -584,7 +592,7 @@ class LunchEventTask extends sfBaseTask
     $result .= $this->getLunchRandomizerFooter();
 
     //シャッフル結果をコメントに書き込む
-    if ($post)
+    if (!$dryrun)
     {
       $target_event_id = $this->getTargetLunchEventId();
       $agent_id = $this->getLunchRandomizerAgentId();
@@ -599,10 +607,11 @@ class LunchEventTask extends sfBaseTask
       $this->log2activity($agent_id, 'ランチメンバーシャッフル完了！'.$this->generateEventURL($target_event_id));
     } else {
       print_r($result);
+      echo "\n";
     }
   }
 
-  private function test_createevent()
+  private function test_createevent($test=false)
   {
     $event_date = strtotime('tomorrow');
     $title = date('m/d',$event_date) .  'のランチイベント';
@@ -622,10 +631,18 @@ class LunchEventTask extends sfBaseTask
     $event->setOpenDate(date("Y-m-d",$event_date));
     $event->save();
 
-    $member = Doctrine::getTable('Member')->find($member_id);
+    if (!$test)
+    {
+      $member = Doctrine::getTable('Member')->find($member_id);
 
-    $this->setTargetLunchEventId($event->id);
-    $this->log2activity($member_id,'明日のランチイベントを作成！');
+      $this->setTargetLunchEventId($event->id);
+      #$this->log2activity($member_id,'明日のランチイベントを作成！');
+      $this->log2activity($member_id,'ランチイベントを作成！');
+    }
+    else
+    {
+      echo "ランチイベントを作成！\n";
+    }
   }
 
   //
