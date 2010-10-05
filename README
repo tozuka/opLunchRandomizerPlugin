@@ -6,6 +6,7 @@
 ■CRONの設定
 /etc/crontab に以下のように設定する。
 
+00 10 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch notify
 35 11 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch shuffle
 00 12 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch create
 
@@ -19,13 +20,15 @@ LrCommunity ランチイベントを設置するコミュニティID
 設定値をすべて入力しないと、うまく動作しない。
 
 ■更新履歴
-2010/07/21 [tejima] READMEに更新履歴、TODO欄を追加
-2010/07/27 [tozuka] 5人組が出来てしまう問題を解消
+2010/10/04 [tozuka] イベント参加を促す notify タスクを追加
+2010/09/29 [tozuka] メンバーシャッフル完了時のつぶやきにリンクを追加
 2010/08/02 [tozuka]
 直前回の組み合わせと可能な限りかぶらないグループ分けを行うモード
 shuffleMCMC, shuffleMCMC2 を実装。
 ・shuffleMCMCは前回の組み合わせだけを考慮
 ・shuffleMCMC2はウェイト1/3で前々回の組み合わせについても考慮
+2010/07/27 [tozuka] 5人組が出来てしまう問題を解消
+2010/07/21 [tejima] READMEに更新履歴、TODO欄を追加
 
 ■TODO
 ・アクティビティ報告に対象のイベントへのリンクを貼る
