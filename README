@@ -6,7 +6,8 @@
 ■CRONの設定
 /etc/crontab に以下のように設定する。
 
-00 10 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch notify
+00 10 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch inviteEntry
+25 11 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch shimekiruyo
 35 11 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch shuffle
 00 12 * * * cd /var/www/sns/sns.com/ && ./symfony sa-lunch create
 
@@ -20,6 +21,7 @@ LrCommunity ランチイベントを設置するコミュニティID
 設定値をすべて入力しないと、うまく動作しない。
 
 ■更新履歴
+2010/10/19 [tozuka] notifyをinviteEventに移動。shimekiruyoを追加。
 2010/10/04 [tozuka] イベント参加を促す notify タスクを追加
 2010/09/29 [tozuka] メンバーシャッフル完了時のつぶやきにリンクを追加
 2010/08/02 [tozuka]
