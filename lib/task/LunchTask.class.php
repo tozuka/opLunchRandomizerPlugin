@@ -120,8 +120,11 @@ class LunchEventTask extends sfBaseTask
       case 'shuffle':
         $this->shuffle();
         break;
-      case 'notify':
-        $this->notify();
+      case 'inviteEntry':
+        $this->notify(1);
+        break;
+      case 'shimekiruyo':
+        $this->notify(2);
         break;
       case 'shuffleMCMC':
         $this->shuffleMCMC();
@@ -482,6 +485,9 @@ class LunchEventTask extends sfBaseTask
   // 過去（最大で直近2日分）の結果を踏まえつつ、できるだけかぶらないようなランダムなグループを作る
   private function shuffleMCMC($second_weight=0, $dryrun=false) // 0.0≦$second_weight≦1.0
   {
+    $agent_id = $this->getLunchRandomizerAgentId();
+    $this->log2activity($agent_id, 'ランチメンバーシャッフル開始！');
+
     $req = $this->getRequests();
     
     $requests = $req['requests'];
@@ -651,11 +657,17 @@ class LunchEventTask extends sfBaseTask
   }
 
   //
-  private function notify()
+  private function notify($msg_id=1)
   {
     $memberId = $this->getLunchRandomizerAgentId();
     $targetEventId = $this->getTargetLunchEventId();
-    $this->log2activity($memberId, '手嶋屋の皆さん、ランチに参加しましょう！'.$this->generateEventURL($targetEventId));
+    switch ($msg_id) {
+      case 1: default:
+        $msg = '手嶋屋の皆さん、ランチに参加しましょう！'; break;
+      case 2:
+        $msg = 'ランチ参加締切りま〜す！'; break;
+    }
+    $this->log2activity($memberId, $msg.' '.$this->generateEventURL($targetEventId));
   }
 
   private function test_getmember(){
